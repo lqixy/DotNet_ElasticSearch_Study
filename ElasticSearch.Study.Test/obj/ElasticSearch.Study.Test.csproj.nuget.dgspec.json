@@ -1,0 +1,88 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\MyProject\\dotnet\\study\\ElasticSearch.Study\\ElasticSearch.Study.Test\\ElasticSearch.Study.Test.csproj": {}
+  },
+  "projects": {
+    "D:\\MyProject\\dotnet\\study\\ElasticSearch.Study\\ElasticSearch.Study.Test\\ElasticSearch.Study.Test.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\MyProject\\dotnet\\study\\ElasticSearch.Study\\ElasticSearch.Study.Test\\ElasticSearch.Study.Test.csproj",
+        "projectName": "ElasticSearch.Study.Test",
+        "projectPath": "D:\\MyProject\\dotnet\\study\\ElasticSearch.Study\\ElasticSearch.Study.Test\\ElasticSearch.Study.Test.csproj",
+        "packagesPath": "C:\\Users\\kyle\\.nuget\\packages\\",
+        "outputPath": "D:\\MyProject\\dotnet\\study\\ElasticSearch.Study\\ElasticSearch.Study.Test\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\kyle\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "http://nuget.tec.local/nuget": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Elasticsearch.Net": {
+              "target": "Package",
+              "version": "[7.12.0, )"
+            },
+            "MSTest.TestAdapter": {
+              "target": "Package",
+              "version": "[2.1.0, )"
+            },
+            "MSTest.TestFramework": {
+              "target": "Package",
+              "version": "[2.1.0, )"
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[16.5.0, )"
+            },
+            "NEST": {
+              "target": "Package",
+              "version": "[7.12.0, )"
+            },
+            "coverlet.collector": {
+              "target": "Package",
+              "version": "[1.2.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
