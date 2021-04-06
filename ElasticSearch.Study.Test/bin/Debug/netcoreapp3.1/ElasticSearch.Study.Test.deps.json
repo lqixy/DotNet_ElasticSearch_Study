@@ -1142,7 +1142,7 @@
     "Microsoft.Win32.Primitives/4.3.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-aYYctDQDNJHFQEHm86uEDCoBy/AFlq0u+VNdYX9PVH9jPF2VASbeFBRaCZPrdZiW1Q7Zx9Z9HW9cVvpZrEuSKA==",
+      "sha512": "sha512-9ZQKCWxH7Ijp9BfahvL2Zyf1cJIk8XYLF6Yjzr2yi0b2cOut/HQ31qf1ThHAgCc3WiZMdnWcfJCgN82/0UunxA==",
       "path": "microsoft.win32.primitives/4.3.0",
       "hashPath": "microsoft.win32.primitives.4.3.0.nupkg.sha512"
     },

@@ -15,7 +15,8 @@ namespace ElasticSearch.Study.Test
         public UnitTest1()
         {
             var local = "http://localhost:9200/";
-            var uris = new List<Uri> { new System.Uri("http://8.140.136.122:9200/") };
+            var online = "http://8.140.136.122:9200/";
+            var uris = new List<Uri> { new System.Uri(local) };
             var pool = new StaticConnectionPool(uris);
             var settings = new ConnectionSettings(pool);
             settings.DefaultIndex(INDEX_NAME);
@@ -42,21 +43,29 @@ namespace ElasticSearch.Study.Test
                 Age = x * 10
             });
 
-
-
             var result = client.IndexMany(persons);
         }
 
         [TestMethod]
         public void Update_Test()
         {
-
+            var result = client.Indices;
+            client.UpdateByQuery<ElasticSearchTestData>(x => x.Query(q => 
+                q.Term(t=>t.Id,4)));
         }
 
         [TestMethod]
         public void Delete_Test()
         {
 
+            //var result = client.DeleteByQuery<ElasticSearchTestData>(x => x.Query(q => q.Term(t => t.Id, 1)));
+            var persons = Enumerable.Range(1, 3).Select(x => new ElasticSearchTestData
+            {
+                Id = x,
+                Name = $"测试张{x}",
+                Age = x * 10
+            });
+            var result = client.DeleteMany(persons, INDEX_NAME);
         }
 
         [TestMethod]
@@ -92,31 +101,28 @@ namespace ElasticSearch.Study.Test
                     }
                 };
 
-                //var result = client.Indices.Create(INDEX_NAME);
-                var result = client.Indices.Create(INDEX_NAME,
-                      p => p.InitializeUsing(indexState).Settings(s => s.Analysis(
-                      an => an
-                      .TokenFilters(tf => tf.UserDefined("pinyin_quanpin_filter", new PinyinFullFilter())
-                      .EdgeNGram("edge_ngram_filter", eng => eng.MaxGram(50).MinGram(1)))
-                      //.CharFilters(cf=>cf.)
-                      .Analyzers(ana => ana
-                          //新增分析器
-                          .Custom("pinyin_analyzer", ca => ca
-                              .Tokenizer("keyword")
-                              .Filters("pinyin_quanpin_filter", "word_delimiter"))
-                          .Custom("ngram_analyzer", ca => ca
-                              .Tokenizer("keyword")
-                              .Filters("edge_ngram_filter", "lowercase"))
-                          )
-                      ))
-                  //.Mappings(m => m.Map<ElasticSearchTestData>(attribute.TypeName, mps => mps.AutoMap()
-                  .Map<ElasticSearchTestData>(x => x.AutoMap()
-                  .Properties(ps => ps.Keyword(text =>
-                          text.Name(e => e.Name).Fields(fs => fs.Text(ss => ss.Name("pinyin").Analyzer("pinyin_analyzer").Store(false).TermVector(TermVectorOption.WithPositionsOffsets))
-                          .Text(ss => ss.Name("fenci").Analyzer("ik_smart").SearchAnalyzer("ik_smart").Store(false).TermVector(TermVectorOption.WithPositionsOffsets))
-                          .Text(ss => ss.Name("ng").Analyzer("ngram_analyzer").Store(false).TermVector(TermVectorOption.WithPositionsOffsets)))
-                        ))
-                  ));
+                var result = client.Indices.Create(INDEX_NAME);
+                //var result = client.Indices.Create(INDEX_NAME, p => p
+                //   .InitializeUsing(indexState).Settings(s => s.Analysis(
+                //       an => an
+                //       .TokenFilters(tf => tf.UserDefined("pinyin_quanpin_filter", new PinyinFullFilter())
+                //       .EdgeNGram("edge_ngram_filter", eng => eng.MaxGram(50).MinGram(1)))
+                //       //.CharFilters(cf=>cf.)
+                //       .Analyzers(ana => ana
+                //           //新增分析器
+                //           .Custom("pinyin_analyzer", ca => ca
+                //               .Tokenizer("keyword")
+                //               .Filters("pinyin_quanpin_filter", "word_delimiter"))
+                //           //.Custom("pinyin_analyzer", ca => ca
+                //           //    .Tokenizer("keyword")
+                //           //    .Filters("pinyin_quanpin_filter", "word_delimiter"))
+
+                //           )
+                //       ))
+                //   .Aliases(a => a.Alias(INDEX_NAME))
+                //   //.Mappings(m => m.Map<T>(typeof(T).Name, mps => mps.AutoMap()))
+                //   .Map<ElasticSearchTestData>(map => map.AutoMap())
+                //    );
             }
         }
 
