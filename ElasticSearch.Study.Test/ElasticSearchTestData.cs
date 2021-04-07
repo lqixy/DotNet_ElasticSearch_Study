@@ -33,13 +33,17 @@ namespace ElasticSearch.Study.Test
             }
         }
         //[Keyword(Ignore = true)]
-        public string Reminder
-        {
-            get
-            {
+        //public string Reminder
+        //{
+        //    get
+        //    {
 
-                return $"test{this.Name}";
-            }
-        }
+        //        return $"test{this.Name}";
+        //    }
+        //}
+        public string Reminder { get; set; }
+        public int Sort { get; set; }
+        public IEnumerable<int> Has { get; set; }
     }
+
 }

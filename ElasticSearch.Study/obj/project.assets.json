@@ -235,26 +235,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\lqixy\\.nuget\\packages\\": {}
+    "C:\\Users\\kyle\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\project\\dotnet\\core\\DotNet_ElasticSearch_Study\\ElasticSearch.Study\\ElasticSearch.Study.csproj",
+      "projectUniqueName": "D:\\MyProject\\dotnet\\study\\DotNet_ElasticSearch_Study\\ElasticSearch.Study\\ElasticSearch.Study.csproj",
       "projectName": "ElasticSearch.Study",
-      "projectPath": "D:\\project\\dotnet\\core\\DotNet_ElasticSearch_Study\\ElasticSearch.Study\\ElasticSearch.Study.csproj",
-      "packagesPath": "C:\\Users\\lqixy\\.nuget\\packages\\",
-      "outputPath": "D:\\project\\dotnet\\core\\DotNet_ElasticSearch_Study\\ElasticSearch.Study\\obj\\",
+      "projectPath": "D:\\MyProject\\dotnet\\study\\DotNet_ElasticSearch_Study\\ElasticSearch.Study\\ElasticSearch.Study.csproj",
+      "packagesPath": "C:\\Users\\kyle\\.nuget\\packages\\",
+      "outputPath": "D:\\MyProject\\dotnet\\study\\DotNet_ElasticSearch_Study\\ElasticSearch.Study\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\lqixy\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\kyle\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "http://nuget.tec.local/nuget": {},
         "https://api.nuget.org/v3/index.json": {}
       },
