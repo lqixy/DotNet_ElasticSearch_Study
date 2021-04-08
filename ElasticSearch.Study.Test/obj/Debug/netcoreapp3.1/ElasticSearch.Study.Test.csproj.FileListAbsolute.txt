@@ -289,3 +289,4 @@ D:\MyProject\dotnet\study\DotNet_ElasticSearch_Study\ElasticSearch.Study.Test\ob
 D:\MyProject\dotnet\study\DotNet_ElasticSearch_Study\ElasticSearch.Study.Test\obj\Debug\netcoreapp3.1\ElasticSearch.Study.Test.dll
 D:\MyProject\dotnet\study\DotNet_ElasticSearch_Study\ElasticSearch.Study.Test\obj\Debug\netcoreapp3.1\ElasticSearch.Study.Test.pdb
 D:\MyProject\dotnet\study\DotNet_ElasticSearch_Study\ElasticSearch.Study.Test\obj\Debug\netcoreapp3.1\ElasticSearch.Study.Test.genruntimeconfig.cache
+D:\MyProject\dotnet\study\DotNet_ElasticSearch_Study\ElasticSearch.Study.Test\bin\Debug\netcoreapp3.1\Nest.JsonNetSerializer.dll

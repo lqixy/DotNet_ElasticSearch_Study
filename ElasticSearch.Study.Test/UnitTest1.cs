@@ -11,20 +11,24 @@ namespace ElasticSearch.Study.Test
     [TestClass]
     public class UnitTest1
     {
-        private const string INDEX_NAME = "ttmall_index";
+        private const string INDEX_NAME = "my_index";
         private const string RELATION_NAME = "my_relation";
         private readonly ElasticClient client;
         private const string SORT_FIELD = "sort";
+        private const string tenantId1 = "7d887334-69b2-4a21-ab3e-315729738651";
+        private const string tenantId2 = "a6fcee39-2c94-4955-8577-abdd607f96b1";
 
         public UnitTest1()
         {
-            var local = "http://192.168.0.31:9200/";
+            var local = "http://localhost:9200/";
             var online = "http://8.140.136.122:9200/";
             var uris = new List<Uri> { new System.Uri(local) };
             var pool = new StaticConnectionPool(uris);
-            var settings = new ConnectionSettings(pool);
+            var settings = new ConnectionSettings(pool,
+                sourceSerializer: (builtin, settings) => new MyFirstCustomJsonNetSerializer(builtin, settings));
             settings.DefaultIndex(INDEX_NAME);
-            settings.DefaultMappingFor<ElasticSearchTestData>(m => m.RelationName(RELATION_NAME));
+
+            //settings.DefaultMappingFor<ElasticSearchTestData>(m => m.RelationName(RELATION_NAME));
             //settings.
 
             client = new ElasticClient(settings);
@@ -41,6 +45,10 @@ namespace ElasticSearch.Study.Test
         public void IndexMany_Test()
         {
             var strs = CONTENT.Split("\r\n");
+            //var tenantId1 = "7d887334-69b2-4a21-ab3e-315729738651";
+            //var tenantId2 = "a6fcee39-2c94-4955-8577-abdd607f96b1";
+
+
             var persons = Enumerable.Range(1, 100).Select(x =>
             {
                 var seed = BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0);
@@ -52,8 +60,12 @@ namespace ElasticSearch.Study.Test
                 return new ElasticSearchTestData
                 {
                     Id = x,
+                    TenantId = x > 60 ? tenantId1 : tenantId2,
+                    TagIds = new string[2] { Guid.NewGuid().ToString(), Guid.NewGuid().ToString() },
                     Name = strs[x],
                     Age = x * 10,
+                    AdsId = random,
+                    SpecpropId = Guid.NewGuid().ToString(),
                     Reminder = strs[200 - x],
                     Sort = x,
                     Has = has ?? new int[0]
@@ -61,22 +73,6 @@ namespace ElasticSearch.Study.Test
             });
 
             var result = client.IndexMany(persons);
-        }
-
-        private int GetIndex(List<int> usedIndex)
-        {
-            var seed = BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0);
-            var index = new Random(seed).Next(0, 100);
-            if (!usedIndex.Any(i => i == index))
-            {
-                usedIndex.Add(index);
-            }
-            else
-            {
-                index = GetIndex(usedIndex);
-            }
-
-            return index;
         }
 
         [TestMethod]
@@ -132,18 +128,34 @@ namespace ElasticSearch.Study.Test
             //          )
             //      )
             //);
-            var ids = new int[] { 1, 20, 30, 40 };
+            //var tenantId = "a6fcee39-2c94-4955-8577-abdd607f96b1";
+            var tenantIds = new string[2] { tenantId1, tenantId2 };
+            var tagId = "6a43ae5f-5fd8-4bd3-b4a9-e11bcd2a96a9";
+            var tagIds = new string[2] { "e33bcf8f-1d68-4468-b5a2-102db9be8e54", "f3cfb1bc-ddee-4b08-9c21-556cccc95b01" };
+            var adsIds = new int[] { 2 };
             var sourceFieldStrs = new string[2] { "id", "name" };
+            var specpropIds = new string[3] { "f4d75547-a638-4391-88c2-5dd3f5e53bd3",
+                "26580211-f662-4ee4-8367-eb1b4616c002", "0a2d4d7e-a548-476c-a0a6-27985d5ad33f" };
             var mustQuerys = new List<Func<QueryContainerDescriptor<ElasticSearchTestData>, QueryContainer>>();
 
-            mustQuerys.Add(x => x.Match(m => m.Field(f => f.Has).Query("1")));
+            //mustQuerys.Add(x => x.Match(m => m.Field(f => f.Has).Query("1")));
+
+            //// tenantId  字符串使用 match
+            mustQuerys.Add(x => x.Term(t => t.TenantId, tenantId1)); //查不出来
+            //mustQuerys.Add(x => x.Match(m => m.Field(f => f.TenantId).Query(tenantId)));
+            //mustQuerys.Add(x => x.Match(m => m.Field(f => f.TenantId).Query(tenantId2)));
+
+            // tagId
+            //mustQuerys.Add(x => x.Terms(t => t.Field(f => f.TagIds).Terms(new string[1] { tagId }))); //查不出来
+            //mustQuerys.Add(x => x.Match(m => m.Field(f => f.TagIds).Query(tagId))); // 单个
 
             //// id小于5
             //mustQuerys.Add(x => x.TermRange(tr => tr.Field(f => f.Id).LessThan("5")));
 
-            //// 多值
+            //// 多值 值类型使用 term
             //mustQuerys.Add(x => x.Terms(t => t.Field(f => f.Id).Terms(ids)));
             //mustQuerys.Add(x => x.Terms(t => t.Field(f => f.Has).Terms(new int[1] { 0 })));
+            //mustQuerys.Add(x => x.Terms(t => t.Field(f => f.AdsId).Terms(adsIds)));
 
             //// 包含文字
             //mustQuerys.Add(x =>
@@ -155,18 +167,32 @@ namespace ElasticSearch.Study.Test
             //matchQuerys.Add(x => x.Match(m => m.Field(f => f.Name).Query("测试")));
 
 
+            var shouldQuerys = new List<Func<QueryContainerDescriptor<ElasticSearchTestData>, QueryContainer>>();
+            //foreach (var item in tagIds)
+            //{
+            //    shouldQuerys.Add(x => x.Match(m => m.Field(f => f.TagIds).Query(item)));
+            //}
+            //foreach (var item in specpropIds)
+            //{
+            //    shouldQuerys.Add(x => x.Match(m => m.Field(f => f.SpecpropId).Query(item)));
+            //}
+
+
             // 排序
             var sort = new SortDescriptor<ElasticSearchTestData>();
-            sort.Descending(SORT_FIELD);
+            sort.Descending(null);
 
             // 返回字段
             var source = new SourceFilterDescriptor<ElasticSearchTestData>();
             //source.Includes(i => i.Fields(sourceFieldStrs));
-
+            //IElasticsearchSerializer
             search
                 .Query(q =>
                     q.Bool(b => b.Must(mustQuerys)
-                    ))
+                    )
+                    &&
+                    q.Bool(b => b.Should(shouldQuerys))
+                    )
                 .Sort(s => sort)
                 .Source(s => source)
                 .From(0)
@@ -176,9 +202,10 @@ namespace ElasticSearch.Study.Test
 
             //search.Query(q => q
             //    .Match(m => m.Field(f => f.Name).Query("test")));
-
-
+            
+            var seri = client.RequestResponseSerializer.ToString();
             var result = client.Search<ElasticSearchTestData>(search);
+            var str = result.ToString();
         }
 
         [TestMethod]
